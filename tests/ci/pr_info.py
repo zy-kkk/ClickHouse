@@ -2,6 +2,7 @@
 import json
 import logging
 import os
+from datetime import datetime
 from typing import Set
 
 from unidiff import PatchSet  # type: ignore
@@ -87,6 +88,8 @@ class PRInfo:
         self.body = ""
         self.diff_urls = []
         self.release_pr = ""
+        self.base_pushed_at = datetime.fromtimestamp(0)
+        self.head_pushed_at = datetime.fromtimestamp(0)
         ref = github_event.get("ref", "refs/head/master")
         if ref and ref.startswith("refs/heads/"):
             ref = ref[11:]
@@ -132,10 +135,18 @@ class PRInfo:
             self.commit_html_url = f"{repo_prefix}/commits/{self.sha}"
             self.pr_html_url = f"{repo_prefix}/pull/{self.number}"
 
-            self.base_ref = github_event["pull_request"]["base"]["ref"]
-            self.base_name = github_event["pull_request"]["base"]["repo"]["full_name"]
-            self.head_ref = github_event["pull_request"]["head"]["ref"]
-            self.head_name = github_event["pull_request"]["head"]["repo"]["full_name"]
+            base = github_event["pull_request"]["base"]
+            self.base_ref = base["ref"]
+            self.base_name = base["repo"]["full_name"]
+            self.base_pushed_at = datetime.strptime(
+                base["repo"]["pushed_at"], "%Y-%m-%dT%H:%M:%SZ"
+            )
+            head = github_event["pull_request"]["head"]
+            self.head_ref = head["ref"]
+            self.head_name = head["repo"]["full_name"]
+            self.head_pushed_at = datetime.strptime(
+                head["repo"]["pushed_at"], "%Y-%m-%dT%H:%M:%SZ"
+            )
             self.body = github_event["pull_request"]["body"]
             self.labels = {
                 label["name"] for label in github_event["pull_request"]["labels"]
