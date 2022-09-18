@@ -87,7 +87,7 @@ class PRInfo:
         self.changed_files = set()  # type: Set[str]
         self.body = ""
         self.diff_urls = []
-        self.release_pr = ""
+        self.release_pr = 0
         self.base_pushed_at = datetime.fromtimestamp(0)
         self.head_pushed_at = datetime.fromtimestamp(0)
         ref = github_event.get("ref", "refs/head/master")
