@@ -148,11 +148,7 @@ void addQueryTreePasses(QueryTreePassManager & manager)
     manager.addPass(std::make_shared<OrderByTupleEliminationPass>());
     manager.addPass(std::make_shared<OrderByLimitByDuplicateEliminationPass>());
 
-    if (settings.optimize_or_like_chain
-        && settings.allow_hyperscan
-        && settings.max_hyperscan_regexp_length == 0
-        && settings.max_hyperscan_regexp_total_length == 0)
-        manager.addPass(std::make_shared<ConvertOrLikeChainPass>());
+    manager.addPass(std::make_shared<ConvertOrLikeChainPass>());
 }
 
 }
