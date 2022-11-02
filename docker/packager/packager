@@ -258,6 +258,7 @@ def parse_env_variables(
         if clang_tidy:
             # 15G is not enough for tidy build
             cache_maxsize = "25G"
+            result.append("CTCACHE_DIR=/ccache/clang-tidy")
         result.append(f"CCACHE_MAXSIZE={cache_maxsize}")
 
     if distcc_hosts:
@@ -282,9 +283,7 @@ def parse_env_variables(
         cmake_flags.append("-DENABLE_TESTS=1")
 
     if shared_libraries:
-        cmake_flags.append(
-            "-DUSE_STATIC_LIBRARIES=0 -DSPLIT_SHARED_LIBRARIES=1"
-        )
+        cmake_flags.append("-DUSE_STATIC_LIBRARIES=0 -DSPLIT_SHARED_LIBRARIES=1")
         # We can't always build utils because it requires too much space, but
         # we have to build them at least in some way in CI. The shared library
         # build is probably the least heavy disk-wise.
