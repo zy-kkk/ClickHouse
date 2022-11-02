@@ -91,7 +91,7 @@ ENV PATH="$PATH:/usr/local/go/bin"
 ENV GOPATH=/workdir/go
 ENV GOCACHE=/workdir/
 
-RUN curl https://raw.githubusercontent.com/matus-chochlik/ctcache/94af4e2e46cd88bf361db46d9066a842f8fc2d8d/clang-tidy-cache -Lo /usr/bin/clang-tidy-cache \
+RUN curl https://raw.githubusercontent.com/matus-chochlik/ctcache/1f6ce6b0581b00cffcd1f6642c7fd41cc81f2d21/clang-tidy-cache -Lo /usr/bin/clang-tidy-cache \
   && chmod +x /usr/bin/clang-tidy-cache
 
 RUN mkdir /workdir && chmod 777 /workdir
