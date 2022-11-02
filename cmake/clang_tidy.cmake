@@ -3,7 +3,14 @@ option (ENABLE_CLANG_TIDY "Use clang-tidy static analyzer" OFF)
 
 if (ENABLE_CLANG_TIDY)
 
-    find_program (CLANG_TIDY_PATH NAMES "clang-tidy" "clang-tidy-15" "clang-tidy-14" "clang-tidy-13" "clang-tidy-12")
+    find_program (CLANG_TIDY_CACHE_PATH NAMES "clang-tidy-cache")
+    if (CLANG_TIDY_CACHE_PATH)
+        find_program (_CLANG_TIDY_PATH NAMES "clang-tidy" "clang-tidy-15" "clang-tidy-14" "clang-tidy-13" "clang-tidy-12")
+
+        set (CLANG_TIDY_PATH "${CLANG_TIDY_CACHE_PATH};${_CLANG_TIDY_PATH}" CACHE STRING "a doc")
+    else ()
+        find_program (CLANG_TIDY_PATH NAMES "clang-tidy" "clang-tidy-15" "clang-tidy-14" "clang-tidy-13" "clang-tidy-12")
+    endif ()
 
     if (CLANG_TIDY_PATH)
         message (STATUS
