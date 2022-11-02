@@ -258,6 +258,9 @@ def parse_env_variables(
         if clang_tidy:
             # 15G is not enough for tidy build
             cache_maxsize = "25G"
+
+            # It's the directory for the cache itself. `CTCACHE_DIR` has the same purpose as the `CCACHE_DIR` above.
+            # It's there to have the clang-tidy cache embedded into our standard `CCACHE_DIR`
             result.append("CTCACHE_DIR=/ccache/clang-tidy")
         result.append(f"CCACHE_MAXSIZE={cache_maxsize}")
 
